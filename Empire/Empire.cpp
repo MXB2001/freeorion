@@ -550,8 +550,9 @@ std::vector<std::pair<std::string_view, int>> Empire::TotalPolicySlots() const {
 
     // collect policy slot category meter values and return
     for (auto& [cat, cat_slots_meter_string] : cats_slot_meters) {
+        const std::string_view csms{cat_slots_meter_string};
         auto it = std::find_if(m_meters.begin(), m_meters.end(),
-                               [&](const auto& e) { return e.first == cat_slots_meter_string; });
+                               [csms](const auto& e) { return e.first == csms; });
         if (it == m_meters.end()) {
             ErrorLogger() << "Empire doesn't have policy category slot meter with name: " << cat_slots_meter_string;
             continue;
