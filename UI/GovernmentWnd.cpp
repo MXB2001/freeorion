@@ -1331,9 +1331,10 @@ void GovernmentWnd::MainPanel::SetPolicy(const Policy* policy, unsigned int slot
     }
 
     // what slots are available...
+    const auto aic = adopt_in_category;
     const auto total_policy_slots = empire->TotalPolicySlots();
     const auto total_policy_slots_it = std::find_if(total_policy_slots.begin(), total_policy_slots.end(),
-                                                    [adopt_in_category](const auto& cat_slots)
+                                                    [aic](const auto& cat_slots)
                                                     { return cat_slots.first == adopt_in_category; });
     if (total_policy_slots_it == total_policy_slots.end()) {
         ErrorLogger() << "GovernmentWnd::MainPanel::SetPolicy asked to adopt in category " << adopt_in_category << " which has no slots";
