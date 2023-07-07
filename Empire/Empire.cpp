@@ -1459,7 +1459,8 @@ namespace {
         requires requires(std::map<K,V,A> m, Fx f) { {f(*m.begin())} -> std::same_as<std::size_t>; }
     std::size_t SizeOfContents(const std::map<K,V,A>& m, const Fx& sz_of_contents)
     {
-        const std::size_t retval = (sizeof(std::map<K,V,A>::value_type) + sizeof(void*))*m.size(); // extra pointer space estimate for map node overhead
+        using value_type = std::decay_t<decltype(m)>::value_type;
+        const std::size_t retval = (sizeof(value_type) + sizeof(void*))*m.size(); // extra pointer space estimate for map node overhead
         return std::transform_reduce(m.begin(), m.end(), retval, std::plus<std::size_t>{}, sz_of_contents);
     }
 
@@ -1471,7 +1472,8 @@ namespace {
         requires requires(std::set<K,A> s, Fx f) { {f(*s.begin())} -> std::same_as<std::size_t>; }
     std::size_t SizeOfContents(const std::set<K,A>& s, const Fx& sz_of_contents)
     {
-        const std::size_t retval = (sizeof(std::set<K,A>::value_type) + sizeof(void*))*s.size(); // extra pointer space estimate for set node overhead
+        using value_type = std::decay_t<decltype(s)>::value_type;
+        const std::size_t retval = (sizeof(value_type) + sizeof(void*))*s.size(); // extra pointer space estimate for set node overhead
         return std::transform_reduce(s.begin(), s.end(), retval, std::plus<std::size_t>{}, sz_of_contents);
     }
 
